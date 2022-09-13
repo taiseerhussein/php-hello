@@ -3,26 +3,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: bgd
-  name: bgd
-  namespace: bgd
+    app: php-hello
+  name: php-hello
+  namespace: php-hello
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bgd
+      app: php-hello
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: bgd
+        app: php-hello
     spec:
       containers:
-      - image: quay.io/redhatworkshops/bgd:latest
-        name: bgd
-        env:
-        - name: COLOR
-          value: "blue"
-        resources: {}
+      - image: quay.io/rh_ee_akugel/php-test:latest
+        name: php-hello
 ---

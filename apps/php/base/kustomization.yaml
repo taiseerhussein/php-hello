@@ -1,5 +1,5 @@
-namespace: bgd
+namespace: php-hello
 resources:
-- bgd-svc.yaml
-- bgd-deployment.yaml
-- bgd-route.yaml
+- php-hello-svc.yaml
+- php-hello-deployment.yaml
+- php-hello-route.yaml
