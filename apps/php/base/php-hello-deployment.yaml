@@ -5,7 +5,6 @@ metadata:
   labels:
     app: php-hello
   name: php-hello
-  namespace: php-hello
 spec:
   replicas: 1
   selector:
