@@ -19,6 +19,6 @@ spec:
         app: php-hello
     spec:
       containers:
-      - image: quay.io/rh_ee_akugel/php-test:latest
+      - image: quay.io/tkhussein/php-hello:latest
         name: php-hello
 ---
