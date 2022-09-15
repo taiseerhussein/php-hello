@@ -4,6 +4,7 @@ kind: Deployment
 metadata:
   labels:
     app: php-hello
+    app2: php-helloo
   name: php-hello
   namespace: php-hello
 spec:
