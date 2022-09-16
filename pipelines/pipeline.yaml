@@ -1,0 +1,95 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: tag-build-and-deploy
+  namespace: tekton-tutorial
+spec:
+  params:
+    - default: 'https://github.com/taiseerhussein/php-hello-dockerfile.git'
+      description: url of the git repo for the code of deployment
+      name: git-url
+      type: string
+    - default: main
+      description: revision to be used from repo of the code for deployment
+      name: git-revision
+      type: string
+    - default: quay.io/tkhussein/php-hello
+      description: image to be build from the code
+      name: IMAGEREPO
+      type: string
+    - default: 'https://github.com/taiseerhussein/php-hello.git'
+      description: The kustomize git repository url
+      name: KUSTOMIZE_GIT_URL
+      type: string
+    - default: main
+      description: The kustomize git repository revision
+      name: KUSTOMIZE_GIT_REVISION
+      type: string
+    - default: apps/php
+      description: The subdirectory in the kustomize git repository
+      name: KUSTOMIZE_GIT_CONTEXT_DIR
+      type: string
+    - default: overlays/qa/php-hello-deployment.yaml
+      description: The YAML file in which to patch the image
+      name: KUSTOMIZE_GIT_FILE_NAME
+      type: string
+    - description: The target image tag
+      name: IMAGETAG
+      type: string
+  tasks:
+    - name: generate-tag
+      taskRef:
+        kind: Task
+        name: generate-tag
+    - name: fetch-repository
+      params:
+        - name: url
+          value: $(params.git-url)
+        - name: deleteExisting
+          value: 'true'
+        - name: revision
+          value: $(params.git-revision)
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+    - name: build-image
+      params:
+        - name: IMAGE
+          value: '$(params.IMAGEREPO):$(params.IMAGETAG)'
+        - name: FORMAT
+          value: docker
+      runAfter:
+        - fetch-repository
+        - generate-tag
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+    - name: update-kustomize-repo
+      params:
+        - name: gitRepositoryUrl
+          value: $(params.KUSTOMIZE_GIT_URL)
+        - name: gitRepositoryRevision
+          value: $(params.KUSTOMIZE_GIT_REVISION)
+        - name: gitPath
+          value: $(params.KUSTOMIZE_GIT_CONTEXT_DIR)
+        - name: fileName
+          value: $(params.KUSTOMIZE_GIT_FILE_NAME)
+        - name: image
+          value: quay.io/tkhussein/php-hello
+        - name: imageTag
+          value: $(params.IMAGETAG)
+        - name: verbose
+          value: 'true'
+      runAfter:
+        - build-image
+      taskRef:
+        kind: Task
+        name: update-kustomize-repo
+  workspaces:
+    - name: shared-workspace
