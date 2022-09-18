@@ -1,0 +1,10 @@
+project: default
+source:
+  repoURL: 'https://github.com/taiseerhussein/php-hello.git'
+  path: apps/php/overlays/qa
+  targetRevision: HEAD
+destination:
+  server: 'https://kubernetes.default.svc'
+  namespace: php-hello-qa
+syncPolicy:
+  automated: {}
