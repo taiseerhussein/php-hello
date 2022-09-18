@@ -21,6 +21,12 @@ spec:
       description: The kustomize git repository url
       name: KUSTOMIZE_GIT_URL
       type: string
+    - description: The target env
+      name: KUSTOMIZE_ENV
+      type: string
+    - description: The target image tag
+      name: IMAGETAG
+      type: string
     - default: main
       description: The kustomize git repository revision
       name: KUSTOMIZE_GIT_REVISION
@@ -29,12 +35,9 @@ spec:
       description: The subdirectory in the kustomize git repository
       name: KUSTOMIZE_GIT_CONTEXT_DIR
       type: string
-    - default: overlays/qa/php-hello-deployment.yaml
+    - default: overlays/$(params.KUSTOMIZE_ENV)/php-hello-deployment.yaml
       description: The YAML file in which to patch the image
       name: KUSTOMIZE_GIT_FILE_NAME
-      type: string
-    - description: The target image tag
-      name: IMAGETAG
       type: string
   tasks:
     - name: generate-tag
