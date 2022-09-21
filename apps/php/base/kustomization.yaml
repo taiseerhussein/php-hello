@@ -3,3 +3,4 @@ resources:
 - php-hello-svc.yaml
 - php-hello-deployment.yaml
 - php-hello-route.yaml
+- config.yaml
