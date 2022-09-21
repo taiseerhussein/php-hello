@@ -7,4 +7,3 @@ resources:
 
 patchesStrategicMerge:
 - php-hello-deployment.yaml
-- config.yaml
