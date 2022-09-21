@@ -1,10 +1,16 @@
-project: default
-source:
-  repoURL: 'https://github.com/taiseerhussein/php-hello.git'
-  path: apps/php/overlays/qa
-  targetRevision: HEAD
-destination:
-  server: 'https://kubernetes.default.svc'
-  namespace: php-hello-qa
-syncPolicy:
-  automated: {}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: php-qa
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/taiseerhussein/php-hello.git'
+    path: apps/php/overlays/qa
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: php-hello-qa
+  syncPolicy:
+    automated: {}
