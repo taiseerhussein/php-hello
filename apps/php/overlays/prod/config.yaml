@@ -7,5 +7,3 @@ data:
   example.property.2: world
   example.property.file: |-
     property.1=value-prod-1
-    property.2=value-prod-2
-    property.3=value-prod-3
