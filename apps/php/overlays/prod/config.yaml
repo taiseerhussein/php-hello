@@ -6,6 +6,6 @@ data:
   example.property.1: hello
   example.property.2: world
   example.property.file: |-
-    property.1=value-1
-    property.2=value-2
-    property.3=value-3
+    property.1=value-prod-1
+    property.2=value-prod-2
+    property.3=value-prod-3
