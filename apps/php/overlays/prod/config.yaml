@@ -6,3 +6,5 @@ data:
   example.property.1: hello
   example.property.2: world
   example.property.3: prod-env
+  example.property.4: prod-env-3
+  example.property.5: prod-env-5
