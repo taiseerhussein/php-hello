@@ -4,4 +4,4 @@ metadata:
   name: php-hello-test
 data:
   example.property.1: hello
-  example.property.2: world
+  example.property.2: world1
