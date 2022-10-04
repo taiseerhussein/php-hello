@@ -4,7 +4,6 @@ namespace: php-hello-qa
 resources:
 - ../../base
 - php-hello-ns.yaml
-- sealed-secret.yaml
 
 patchesStrategicMerge:
 - php-hello-deployment.yaml
