@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: profileservice
+  namespace: openshift-gitops
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: qa
+        url: https://kubernetes.default.svc
+        namespace: php-qa
+      - cluster: qa
+        url: https://kubernetes.default.svc
+        namespace: php-qa-2  
+  template:
+    metadata:
+      name: '{{cluster}}-profileservice'
+    spec:
+      source:
+        repoURL: https://github.com/taiseerhussein/php-hello.git
+        targetRevision: HEAD
+        path: apps/php/overlays/{{cluster}}
+      project: default
+      destination:
+        server: '{{url}}'
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
