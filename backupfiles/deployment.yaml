@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ingestionservice
+  name: ingestionservice
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: ingestionservice
+      deploymentconfig: ingestionservice
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: ingestionservice
+        config: ingestionservice
+        deploymentconfig: REPLACE_ME
+    spec:
+      containers:
+      - image: quay.octfcu.org/foundation/ingestionservice:2022.09.28
+        name: ingestionservice
+      - envFrom:
+        - configMapRef:
+            name: apm-enable
+        - secretRef:
+            name: apm-secret
+        - configMapRef:
+            name: servicelogging
+        - configMapRef:
+            name: endpoints-common
+        - configMapRef:
+            name: ingestionservice
+        image: quay.octfcu.org/foundation/ingestionservice:2022.09.28
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: self
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+        name: REPLACE_ME
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: ready
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      name: ingestionservice
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
