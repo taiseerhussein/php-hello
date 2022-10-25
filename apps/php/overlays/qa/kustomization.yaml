@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: php-hello-dev
 resources:
 - ../../base
-- php-hello-ns.yaml
+
 
 patchesStrategicMerge:
 - php-hello-deployment.yaml
